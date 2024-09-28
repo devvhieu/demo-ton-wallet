@@ -2,14 +2,17 @@
     ViewBag.Title = "Home Page";
 }
 
-<main>
-    <div style="min-height: 90vh" class="d-flex flex-wrap justify-content-center align-items-center">
+<main class="w-100">
+    <div style="min-height: 90vh" class="d-flex flex-wrap justify-content-center align-items-center p-3">
         <button type="button" class="btn btn-outline-primary" id="btnTONConnect">Connect Wallet</button>
+        <div id="walletAddress" class="text-black text-center"></div>
     </div>
 </main>
 
 @section scripts{
     <script src=@Html.FormatValue("https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js", null)></script>
+    <!-- Tải TonWeb từ CDN -->
+    <script src="https://unpkg.com/tonweb@0.0.66/dist/tonweb.js"></script>
 
     <script>
         var tonConnectUI;
@@ -34,7 +37,7 @@
                     if (walletAndwalletInfo) {
                         // update state/reactive variables to show updates in the ui
                         console.log(appName + 'onStatusChange.');
-                      
+
                         handleWalletConnect(walletAndwalletInfo.account.address);
                     } else {
                         handleWalletDisconnection();
@@ -87,12 +90,9 @@
             } else {
                 await tonConnectUI.openModal();
             }
-        
+
         }
 
-        function formatAddress(address) {
-           return`${address.slice(0, 4)}...${address.slice(-4)}}`;
-        }
 
         function checkWalletConnection() {
             if (tonConnectUI.account?.address) {
@@ -103,6 +103,8 @@
         }
 
         function handleWalletConnect(address) {
+            const formatAddress = new TonWeb.utils.Address(address);
+            $("#walletAddress").html(formatAddress.toString(true, true, true, false))
             $.ajax({
                 type: "POST",
                 url: "/Home/SaveAddress",
