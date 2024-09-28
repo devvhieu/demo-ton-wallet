@@ -1,0 +1,5 @@
+{
+  "url": "https://github.com/cdth14b/demo-ton-wallet", // required
+  "name": "Demo Connect Wallet App", // required
+  "iconUrl": "https://ragdoll.crypto-game.co/image_180x180.jpg" // required
+}

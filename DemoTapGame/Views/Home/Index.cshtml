@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+    <div style="min-height: 90vh" class="d-flex flex-wrap justify-content-center align-items-center">
+        <button type="button" class="btn btn-outline-primary" id="btnTONConnect">Connect Wallet</button>
+    </div>
+</main>
+
+@section scripts{
+    <script src=@Html.FormatValue("https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js", null)></script>
+
+    <script>
+        let appName = "My App: ";
+
+        $(function () {
+
+
+            const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+                manifestUrl: 'https://ton-connect.github.io/demo-dapp-with-wallet/tonconnect-manifest.json',
+            });
+
+            tonConnectUI.uiOptions = {
+                twaReturnUrl: 'https://t.me/demowalletapp_bot/demoapp'
+            };
+
+            console.log(window)
+            console.log(tonConnectUI)
+            //disconnectWallet(tonConnectUI);
+
+
+            const unsubscribe = tonConnectUI.onStatusChange(
+                walletAndwalletInfo => {
+                    // update state/reactive variables to show updates in the ui
+                    console.log(appName + 'onStatusChange.');
+
+                    console.log(walletAndwalletInfo.account.address)
+                }
+            );
+
+
+
+            var ajaxBody = "";
+
+
+            async function connectToWallet() {
+                const connectedWallet = await tonConnectUI.connectWallet();
+                // Do something with connectedWallet if needed
+                console.log(connectedWallet);
+
+                console.log(JSON.stringify(connectedWallet));
+
+                tonConnectUI.connectionRestored.then(restored => {
+                    console.log(appName + 'connectionRestored.');
+
+                    if (restored) {
+                        ajaxBody = JSON.stringify({
+                            ...tonConnectUI.wallet,
+                            ...tonConnectUI.walletInfo
+                        });
+                    } else {
+                        console.log(appName + 'Connection was not restored.');
+                    }
+                });
+            }
+            //if (ajaxBody != "") {
+
+            //    $.ajax({
+            //        type: "POST",
+            //        url: "/Home/SaveId",
+            //        data: { id: ajaxBody },
+            //        success: function (response) {
+            //            alert(response);
+            //        }
+            //    });
+            //}
+
+            $("#btnTONConnect").click(function () {
+
+                // Call the function
+                connectToWallet().catch(error => {
+                    console.error(appName + "Error connecting to wallet:", error);
+                });
+            })
+        })
+
+
+        async function disconnectWallet(tonConnectUI) {
+
+            const currentAccount = tonConnectUI.account;
+            console.error(currentAccount);
+
+            if (currentAccount != null) {
+                await tonConnectUI.disconnect();
+                console.error(appName + "disconnect wallet!");
+
+            }
+
+
+        }
+    </script>
+
+}

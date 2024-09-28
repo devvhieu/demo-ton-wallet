@@ -1,0 +1,5 @@
+{
+  "url": "https://6be7-171-250-164-203.ngrok-free.app/", // required
+  "name": "Demo Connect Wallet App", // required
+  "iconUrl": "https://6be7-171-250-164-203.ngrok-free.app/lib/img/trau1.png" // required
+}

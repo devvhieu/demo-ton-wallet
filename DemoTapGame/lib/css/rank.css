@@ -1,0 +1,11 @@
+﻿.title {
+    font-size: 25px;
+    font-weight: bold;
+    color: #FEDB4D;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.bg-gradient-to-t {
+    background: linear-gradient(to top, #facc15, #000000); /* Vàng chuyển dần lên đen */
+}
