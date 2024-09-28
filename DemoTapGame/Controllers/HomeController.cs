@@ -30,12 +30,13 @@ namespace DemoTapGame.Controllers
             return View();
         }
 
-        public ActionResult SaveId(string id)
+        [HttpPost]
+        public ActionResult SaveAddress(string address)
         {
             // Tạo object từ Id được truyền vào
-            var data = new DataModel
+            var data = new WalletDataModel
             {
-                Id = id
+                Address = address
             };
 
             // Chuyển đổi object thành JSON
@@ -51,8 +52,8 @@ namespace DemoTapGame.Controllers
         }
     }
 
-    public class DataModel
+    public class WalletDataModel
     {
-        public string Id { get; set; }
+        public string Address { get; set; }
     }
 }
